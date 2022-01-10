@@ -65,6 +65,10 @@ class AFKWatcher:
         with self.client:
             self.heartbeat_loop()
 
+    def is_barrier_host_active(self):
+        # TODO
+        return True
+
     def heartbeat_loop(self):
         afk = False
         while True:
@@ -82,7 +86,7 @@ class AFKWatcher:
                 logger.debug("Seconds since last input: {}".format(seconds_since_input))
 
                 # If no longer AFK
-                if afk and seconds_since_input < self.settings.timeout:
+                if afk and seconds_since_input < self.settings.timeout and self.is_barrier_host_active():
                     logger.info("No longer AFK")
                     self.ping(afk, timestamp=last_input)
                     afk = False
